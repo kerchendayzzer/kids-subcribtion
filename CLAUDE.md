@@ -1,0 +1,88 @@
+# Kids Subscription (Toy Subscription)
+
+Лендинг-страница для сервиса подписки на детские игрушки по возрасту (0–24 месяца). Целевая аудитория — родители малышей, русскоязычный рынок.
+
+## Tech Stack
+
+- **React 18** + **TypeScript** (SWC compiler)
+- **Vite 5** — сборка и dev-сервер (порт 8080)
+- **Tailwind CSS 3** — стили, кастомная цветовая система через CSS-переменные
+- **shadcn/ui** (Radix UI) — библиотека компонентов (`src/components/ui/`)
+- **Framer Motion** — scroll-анимации (компонент `ScrollReveal`)
+- **React Hook Form** + **Zod** — формы и валидация
+- **React Router 6** — маршрутизация
+- **Sonner** — toast-уведомления
+- **Lucide React** — иконки
+- **Vitest** + **Testing Library** — тесты
+
+## Project Structure
+
+```
+lovable-project-.../
+├── src/
+│   ├── components/          # Секции лендинга
+│   │   ├── ui/              # shadcn/ui компоненты (не редактировать вручную)
+│   │   ├── Header.tsx       # Навигация + мобильное меню
+│   │   ├── HeroSection.tsx  # Hero-блок с CTA и выбором возраста
+│   │   ├── HowItWorks.tsx   # Как это работает (4 шага)
+│   │   ├── AgeSelection.tsx # Подбор по возрасту (карточки)
+│   │   ├── Pricing.tsx      # Тарифы (3 плана + переключатель длительности)
+│   │   ├── Safety.tsx       # Безопасность и качество
+│   │   ├── FaqSection.tsx   # FAQ (аккордеон)
+│   │   ├── FinalCta.tsx     # Финальный CTA-блок
+│   │   ├── Footer.tsx       # Подвал
+│   │   ├── ApplicationModal.tsx  # Модалка заявки
+│   │   └── ScrollReveal.tsx # Обёртка для scroll-анимаций
+│   ├── pages/
+│   │   ├── Index.tsx        # Главная (оркестрирует все секции)
+│   │   └── NotFound.tsx     # 404
+│   ├── hooks/               # Кастомные хуки (use-mobile, use-toast)
+│   ├── lib/utils.ts         # Утилита cn() для Tailwind классов
+│   ├── assets/              # Изображения (hero-toys.png)
+│   ├── test/                # Тесты (vitest)
+│   ├── index.css            # CSS-переменные, Tailwind layers, кастомные утилиты
+│   ├── App.tsx              # Корневой компонент (роутинг, провайдеры)
+│   └── main.tsx             # Точка входа React DOM
+├── index.html               # HTML (мета-теги, шрифт Manrope)
+├── tailwind.config.ts       # Кастомные цвета (card-cream, card-blue, card-mint и др.)
+├── vite.config.ts           # Alias @/ → ./src, порт 8080
+├── components.json          # Конфигурация shadcn/ui
+└── package.json
+```
+
+## Conventions
+
+- **Язык интерфейса** — русский. Весь текст на сайте только на русском языке
+- **Компоненты** — PascalCase, один компонент на файл (.tsx)
+- **Импорты** — через алиас `@/` (= `src/`)
+- **Стили** — только Tailwind-классы, кастомные стили через CSS-переменные в `index.css`
+- **UI-компоненты** — из `src/components/ui/` (shadcn/ui), добавлять через CLI `npx shadcn-ui@latest add`
+- **Коммиты** — на английском, формат: краткое описание изменений (1-2 предложения)
+- **Ветки** — формат: `claude/<описание>` или `feature/<описание>`
+
+## Environment
+
+Проект пока не использует переменные окружения. При добавлении бэкенда потребуются:
+
+- `VITE_API_URL` — URL API для отправки заявок
+- `VITE_ANALYTICS_ID` — ID Яндекс.Метрики или Google Analytics
+
+## What Claude Should Know
+
+- Это **одностраничный лендинг** (SPA), не полноценное приложение
+- **Бэкенда нет** — форма в `ApplicationModal.tsx` показывает toast, но данные никуда не отправляются
+- Цены в `Pricing.tsx` — заглушки (`$X/мес`), реальные значения ещё не определены
+- Footer-ссылки "Условия подписки", "Политика конфиденциальности", "Контакты" ведут на `#` (страницы не созданы)
+- Шрифт **Manrope** подключён через Google Fonts в `index.html`
+- Кастомные CSS-утилиты: `.section-padding`, `.container-content`, `.card-soft`, `.card-no-hover` — определены в `index.css`
+- Модалка заявки управляется через `onOpenModal` prop, который прокидывается из `Index.tsx` в Header, HeroSection, Pricing, FinalCta
+- Возрастные группы: 0–3, 3–6, 6–9, 9–12, 12–15, 15–18, 18–21, 21–24 месяцев
+- Тарифы: Старт (5 игрушек), Оптимум (10 игрушек), Максимум (25 игрушек)
+
+## Don't
+
+- **Не редактируй файлы в `src/components/ui/`** — это автогенерируемые shadcn/ui компоненты, они обновляются через CLI
+- **Не добавляй текст на английском** — весь интерфейс на русском языке
+- **Не удаляй и не переименовывай секции** без явного запроса — их порядок и ID (`#pricing`, `#how-it-works`, `#faq` и т.д.) используются для навигации из Header и Footer
+- **Не добавляй новые npm-зависимости** без необходимости — в проекте уже есть неиспользуемые пакеты (recharts, embla-carousel, cmdk)
+- **Не включай `strict: true`** в tsconfig — проект написан с loose TypeScript, массовое исправление типов сломает код
