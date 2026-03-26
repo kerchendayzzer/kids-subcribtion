@@ -16,6 +16,7 @@ const durations = [
 const plans = [
   {
     name: "Старт",
+    price: 1490,
     toys: "5 игрушек",
     subtitle: "Самое нужное для возраста",
     features: ["5 must-have игрушек", "Подбор по возрасту", "Обновление набора"],
@@ -24,6 +25,7 @@ const plans = [
   },
   {
     name: "Оптимум",
+    price: 2490,
     toys: "10 игрушек",
     subtitle: "Разнообразие без перегруза",
     features: ["10 must-have игрушек", "Баланс: моторика + сенсорика + логика", "Обновление и замены"],
@@ -32,6 +34,7 @@ const plans = [
   },
   {
     name: "Максимум",
+    price: 4490,
     toys: "25 игрушек",
     subtitle: 'Для двух детей или "полный парк"',
     features: ["25 игрушек (много сценариев)", "Покрытие всех зон развития", "Частые обновления без скуки"],
@@ -100,7 +103,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">{plan.subtitle}</p>
                 <p className="text-2xl font-extrabold text-foreground mb-4">
-                  $X<span className="text-sm font-normal text-muted-foreground">/мес</span>
+                  {Math.round(plan.price * (1 - durations[activeDuration].discount / 100))} ₽<span className="text-sm font-normal text-muted-foreground">/мес</span>
                 </p>
                 <ul className="space-y-2 mb-6 flex-1">
                   {plan.features.map((f, fi) => (
@@ -125,7 +128,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
 
         <ScrollReveal delay={0.4}>
           <p className="text-center text-xs text-muted-foreground mt-4">
-            Цены будут объявлены • Оплатите сразу на 3 месяца и получите –5%, на 12 месяцев — –10%.
+            Оплатите сразу на 3 месяца и получите –5%, на 12 месяцев — –10%.
           </p>
         </ScrollReveal>
       </div>
